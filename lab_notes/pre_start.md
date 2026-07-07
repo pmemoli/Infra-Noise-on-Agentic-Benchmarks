@@ -14,7 +14,62 @@ The ultimate goal of the thesis is exploring these 3 research questions:
 
 And building an evaluation harness with tunable disturbers that inject representative infrastructure faults at controlled rates on top of existing agentic tasks. Maybe if time allows (most likely) also build some simple mitigation layer, or maybe even fine tuning the model to make it robust to tool failure.
 
-Right now the priority is **reading the literature**, and becoming familiar with the **tech stack** over which I'm injecting noise. Curious mainly on emulating whatever claude code does for virtualizing its environment. I also want to get a better idea on the concrete infraestructure noise we'd inject  
+Right now the priority is **reading the literature**, and becoming familiar with the **tech stack** over which I'm injecting noise. Curious mainly on emulating whatever claude code does for virtualizing its environment. I also want to get a better idea on the concrete infraestructure noise we'd inject.
+
+## July 7th
+
+Today I'm reading:
+
+- [3] Yuan et al. Understanding and Mitigating Numerical Sources of Nondeterminism in LLM Inference. NeurIPS 2025.
+
+## Mitigating Numerical Sources of Nondeterminism in LLM Inference [3]
+
+Fascinating paper about how different system configurations for LLM inference (Batch size, GPU count, GPU architecture, etc.) introduces variance even in greedy decoding settings. They mainly attribute this to floating point non-associativity due to the effect being noticable particularily with FP16 and BP16, whereas FP32 presents much lower variance. Variance is also considerable for pass@1 in non-greedy settings for different system configurations.
+
+They focus on traditional benchmarks (non agentic), but the principle very much still applies to agentic benchmarks.
+
+### What are we getting from this
+
+The paper basically introduces a third source of infra noise orthogonal to allocated resources and external API rate limits. Unlike the other two sources, I don't think there are any recovery policies for it... 
+
+From the 3 papers we have the following infra noise sources:
+
+- **API limits & availability**
+- **Resource ceilings**
+- **System configuration non-determinism**
+
+I want to see some actual traces for the sources of errors in agentic systems (or just LLMS equiped with tools)... Thinking of these 2 research questions:
+
+RQ4: When agentic systems fail, what is the source of errors?
+RQ5: When LLMs face API limits, lack of availability or limited resource (in the non-preempted case, opposite to anthropic), how do they react?
+
+Claude found these papers (also relevant to the original RQs)
+
+RQ4: 
+- TRAIL: Trace Reasoning and Agentic Issue Localization
+
+RQ5:
+- Tools Fail: Detecting Silent Errors in Faulty Tools
+- Hell or High Water: Evaluating Agentic Recovery from External Failures
+- AgentNoiseBench: Benchmarking Robustness of Tool-Using LLM Agents Under Noisy Condition
+- "Failing Tools: Benchmarking LLM Agent Recovery Under Runtime Tool Failures" 
+
+For recovery from tool errors:
+- CRITIC: Large Language Models Can Self-Correct with Tool-Interactive Critiquing
+- PALADIN: Self-Correcting Language Model Agents to Cure Tool-Failure Cases
+- SHIELDA: Structured Handling of Exceptions in LLM-Driven Agentic Workflows
+- Reflexion: Language Agents with Verbal Reinforcement Learning
+
+There is also this one which relates to system design errors, rather than infra errors, but it is still relevant:
+- MAST: "Why Do Multi-Agent LLM Systems Fail?"
+
+I think its super super relevant to read these over the next few days, and summarize the state of the art and current research regarding:
+
+1. Error distribution in agentic systems
+2. Effects & non-determinism of Infra noise on agentic systems
+3. Recovery policies when possible (also on agentic systems)
+
+It feels like 2. is the most unexplored one. After that I can more clearly plan the thesis RQs and objectives.
 
 ## July 6th
 
@@ -123,9 +178,7 @@ They primarily measure the infra impact by increasing the resource ceiling of en
 
 This is very interesting since it provides one very clear tunable parameter (the resource ceiling) which seems to account for a lot of the infraestructure errors.
 
-From the previous paper, another very clear tunable parameter is API errors for the tools. I'm thinking of API rate and time limits, and simple unavailability for unkown reasons. 
-
-Thus covering infra errors self hosted tools, and also API tools. 
+From the previous paper, another very clear tunable parameter is API errors for the tools. I'm thinking of API rate and time limits, and simple unavailability for unkown reasons. That way I'm covering infra errors self hosted tools, and also API tools. 
 
 What is not so clear to me is what metrics are we getting from this, pass rate is clearly one (for self hosted tools its not hitting the ceiling and for apis its not hitting the time limit) and effect on benchmark accuracy is another. But what about the whole recovery deal?... 
 
