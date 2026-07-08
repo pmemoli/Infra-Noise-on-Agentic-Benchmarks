@@ -4,9 +4,9 @@ This is my note-taking space for the runway before formally starting on July 29t
 
 ## July 8th
 
-Long day today, so I'm just stating the research questions I want to answer through the literature.
+Long day today, so I'm just stating the research questions I want to answer through literature review.
 
-- RQ1: What are the infra noise sources in agentic benchmarks.
+- RQ1: What are the infra noise sources in agentic systems. Can we quantify their impact?
 
 The anthropic blog post, [3] and tangentially [2] are relevant here. From those papers, we find that External API errors/limits, floating point precision and resource limitations are the main sources. There may be others!
 
@@ -30,9 +30,9 @@ Reflexion: Language Agents with Verbal Reinforcement Learning
 
 Our provisional goal for the thesis is:
 
-1. Understanding infra noise sources, and how agents react to them
-2. Creating a benchmark to quantify model behaviour under infra noise
-3. Understanding current recovery policies and potentially proposing others
+1. Understanding infra noise sources, and how agents react to them.
+2. Creating a benchmark to quantify model behaviour under infra noise by injecting disturbances.
+3. Understanding current recovery policies and potentially proposing others.
 
 ## July 7th
 
