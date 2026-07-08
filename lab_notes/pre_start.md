@@ -2,19 +2,37 @@
 
 This is my note-taking space for the runway before formally starting on July 29th on ETH Zurich.
 
-## Goals
+## July 8th
 
-The ultimate goal of the thesis is exploring these 3 research questions:
+Long day today, so I'm just stating the research questions I want to answer through the literature.
 
-1. Can a model recover from injected infrastructure disturbances, and at what cost (extra steps, tokens, latency, budget)?
+- RQ1: What are the infra noise sources in agentic benchmarks.
 
-2. Up to what noise intensity does recovery remain feasible before performance collapses, and how does that threshold scale with model size and scaffolding?
+The anthropic blog post, [3] and tangentially [2] are relevant here. From those papers, we find that External API errors/limits, floating point precision and resource limitations are the main sources. There may be others!
 
-3. Where recovery fails, especially for small models, can a lightweight mitigation layer close the gap, and by how much?
+- RQ2: When agentic systems fail, how are the source of errors distributed (both infra and non-infra).
 
-And building an evaluation harness with tunable disturbers that inject representative infrastructure faults at controlled rates on top of existing agentic tasks. Maybe if time allows (most likely) also build some simple mitigation layer, or maybe even fine tuning the model to make it robust to tool failure.
+TRAIL here is super relevant. It provides a taxonomy of errors and annotated traces which I can analize right now.
 
-Right now the priority is **reading the literature**, and becoming familiar with the **tech stack** over which I'm injecting noise. Curious mainly on emulating whatever claude code does for virtualizing its environment. I also want to get a better idea on the concrete infraestructure noise we'd inject.
+- RQ3: When agentic systems fail due external errors, how do they react?
+
+Tools Fail: Detecting Silent Errors in Faulty Tools
+Hell or High Water: Evaluating Agentic Recovery from External Failures
+AgentNoiseBench: Benchmarking Robustness of Tool-Using LLM Agents Under Noisy Condition
+"Failing Tools: Benchmarking LLM Agent Recovery Under Runtime Tool Failures" 
+
+- RQ4: What are some recovery policies for external errors:
+
+CRITIC: Large Language Models Can Self-Correct with Tool-Interactive Critiquing
+PALADIN: Self-Correcting Language Model Agents to Cure Tool-Failure Cases
+SHIELDA: Structured Handling of Exceptions in LLM-Driven Agentic Workflows
+Reflexion: Language Agents with Verbal Reinforcement Learning
+
+Our provisional goal for the thesis is:
+
+1. Understanding infra noise sources, and how agents react to them
+2. Creating a benchmark to quantify model behaviour under infra noise
+3. Understanding current recovery policies and potentially proposing others
 
 ## July 7th
 
@@ -54,7 +72,7 @@ RQ5:
 - AgentNoiseBench: Benchmarking Robustness of Tool-Using LLM Agents Under Noisy Condition
 - "Failing Tools: Benchmarking LLM Agent Recovery Under Runtime Tool Failures" 
 
-For recovery from tool errors:
+For recovery from tool errors (RQ1 and RQ3):
 - CRITIC: Large Language Models Can Self-Correct with Tool-Interactive Critiquing
 - PALADIN: Self-Correcting Language Model Agents to Cure Tool-Failure Cases
 - SHIELDA: Structured Handling of Exceptions in LLM-Driven Agentic Workflows
@@ -183,3 +201,17 @@ From the previous paper, another very clear tunable parameter is API errors for 
 What is not so clear to me is what metrics are we getting from this, pass rate is clearly one (for self hosted tools its not hitting the ceiling and for apis its not hitting the time limit) and effect on benchmark accuracy is another. But what about the whole recovery deal?... 
 
 Tomorrow i'm reading the other paper from the proposal, looking at other relevant ones and summarizing my thoughts...
+
+## Goals
+
+The ultimate goal of the thesis is exploring these 3 research questions:
+
+RQ1. Can a model recover from injected infrastructure disturbances, and at what cost (extra steps, tokens, latency, budget)?
+
+RQ2. Up to what noise intensity does recovery remain feasible before performance collapses, and how does that threshold scale with model size and scaffolding?
+
+RQ3. Where recovery fails, especially for small models, can a lightweight mitigation layer close the gap, and by how much?
+
+And building an evaluation harness with tunable disturbers that inject representative infrastructure faults at controlled rates on top of existing agentic tasks. Maybe if time allows (most likely) also build some simple mitigation layer, or maybe even fine tuning the model to make it robust to tool failure.
+
+Right now the priority is **reading the literature**, and becoming familiar with the **tech stack** over which I'm injecting noise. Curious mainly on emulating whatever claude code does for virtualizing its environment. I also want to get a better idea on the concrete infraestructure noise we'd inject.
