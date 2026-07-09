@@ -2,17 +2,72 @@
 
 This is my note-taking space for the runway before formally starting on July 29th on ETH Zurich.
 
+## July 9th
+
+Reading:
+
+[4] TRAIL: Trace Reasoning and Agentic Issue Localization
+
+### TRAIL
+
+TRAIL presents a taxonomy of agentic errors and a benchmark of 148 traces annotated by humans according to the taxonomy. They find LLMs pretty poor at annotating traces for monitoring.
+
+Traces were produced by running claude 3.7 sonnet on GAIA and SWE-Bench-Lite, and organically introduce errors by "instruction constraints and force exploration via prompts".
+
+Most interestingly one taxonomy level is "System Execution Errors" which comes in 3 sublevels:
+
+- Configuration Issues:
+    - Incorrect Tool Definition
+    - Environment Setup Errors
+
+- API And System Issues:
+    - Rate Limits
+    - Auth Errors
+    - Service Errors
+    - Resource Not Found
+
+- Resource management:
+    - Resource Exhaustion
+    - Timeout issues
+
+We can absolutely use this taxonomy to guide our studies and understanding model behaviour in each case (RQ3).
+
+But we can't use this to answer RQ1 since the traces force errors. I want some actual model traces in online use...
+
+Looking into actual traces I found BurstGPT which provides 10 million traces from a regional Azure OpenAI GPT service. This LOGS ERORRS!! So it's a cute analysis to start working on RQ1 (understanding infra noise/error sources and their distribution)!!
+
+Also found 2 papers on other source of infra noise which is transient hardware faults:
+
+- Resilience Assessment of Large Language Models under Transient Hardware Faults
+- Analysis of LLM Vulnerability to GPU Soft Errors: An Instruction-Level Fault Injection Study 
+
+Basically:
+
+Observable:
+
+- API errors, Resource management and timeouts, Config issues.
+
+I can measure these by looking at traces.
+
+Unobservable:
+
+- Transient hardware faults and floating point non-determinism from system configuration.
+
+Next step is to read BurstGPT and look into the traces.
+
 ## July 8th
 
 Long day today, so I'm just stating the research questions I want to answer through literature review.
 
-- RQ1: What are the infra noise sources in agentic systems. Can we quantify their impact?
+- RQ1: What are the infra noise sources in agentic systems.
 
 The anthropic blog post, [3] and tangentially [2] are relevant here. From those papers, we find that External API errors/limits, floating point precision and resource limitations are the main sources. There may be others!
 
-- RQ2: When agentic systems fail, how are the source of errors distributed (both infra and non-infra).
-
 TRAIL here is super relevant. It provides a taxonomy of errors and annotated traces which I can analize right now.
+
+- RQ2: Can we quantify the infra noise impact on agentic systems?
+
+This consists in basically building the evaluation harness... The anthropic blog post looks like the only relevant one.
 
 - RQ3: When agentic systems fail due external errors, how do they react?
 
@@ -202,7 +257,7 @@ What is not so clear to me is what metrics are we getting from this, pass rate i
 
 Tomorrow i'm reading the other paper from the proposal, looking at other relevant ones and summarizing my thoughts...
 
-## Goals
+## Goals (written on the 1st day)
 
 The ultimate goal of the thesis is exploring these 3 research questions:
 
